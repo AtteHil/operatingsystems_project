@@ -1,3 +1,20 @@
+/************************************************************
+ * This program is a simple shell that can be used to run
+ * simple unix commands. The shell can be used in two ways:
+ *  1) Interactive mode: user can type commands directly to
+ *     the shell.
+ *  2) Batch mode: user can give a file as an argument to the
+ *     shell and the shell will read the commands from the 
+ *     file.
+ * 
+ * In addition to the course material and LUT programming guide
+ * for the C-language courses, we got help from Teemu Harinen.
+ * 
+ * Authors:
+ * - Aleksi Haapalainen
+ * - Atte Hiltunen
+************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
