@@ -181,8 +181,7 @@ int main(int argc, char *argv[])
     else
     {
         end = readToLinkedlist(stdin); // if no input file is given we read input from standard input stream
-        printLinkedList(&end);
-    }
+        }
 
     if (argv[2] != NULL && argv[1] != NULL) // check that output file is given where to write
     {

@@ -46,6 +46,7 @@ void ReadAndCompare(FILE *inputFile, char *searched)
         Line = NULL; // Reset Line to NULL after freeing to avoid dangling pointer
         lineSize = 0;
     }
+    printf("\n");
     free(Line);
 }
 
