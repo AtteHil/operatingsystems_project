@@ -1,3 +1,17 @@
+/************************************************************
+ * This program is a simple cat function which prints given textfile to
+ * terminal.
+ *
+ * Program accepts one or more text files and will print those out in
+ * terminal.
+ *
+ *  the course material and LUT programming guide
+ *  for the C-language course was used for source.
+ *
+ * Authors:
+ * - Aleksi Haapalainen
+ * - Atte Hiltunen
+ ************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 

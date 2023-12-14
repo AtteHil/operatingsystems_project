@@ -1,11 +1,31 @@
+/************************************************************
+ * This program is a simple reverse function which reverses given textfile
+ * or standard input stream to output file to terminal
+ *
+ * Program can be run three ways
+ *  1) File input and no output: user can give first argument as textfile where program
+ *     reads the lines and outputs lines in reverse order in terminal
+ *  2) File input and output file: user can give outputfile name where the
+ *     lines from first text file will be reversed and saved to.
+ *  3) No arguments: User can run program without additional arguments.
+ *     program then reads from standard input stream and reverses given lines to terminal after quit
+ *     is written to terminal.
+ *
+ * In addition to the course material and LUT programming guide
+ * for the C-language courses,we found help for getline function and how it does memory allocation https://solarianprogrammer.com/2019/04/03/c-programming-read-file-lines-fgets-getline-implement-portable-getline/
+ * and help for linked list and going through it: https://www.learn-c.org/en/Linked_lists
+ *
+ * Authors:
+ * - Aleksi Haapalainen
+ * - Atte Hiltunen
+ ************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 // argc = how many files (should be 3)
 // argv[] list of those arguments given
-// help for getline function and how it does memory allocation https://solarianprogrammer.com/2019/04/03/c-programming-read-file-lines-fgets-getline-implement-portable-getline/
-// help for linked list and going through it: https://www.learn-c.org/en/Linked_lists
+
 struct Node // linked list node
 {
     char *Line;
@@ -13,12 +33,12 @@ struct Node // linked list node
     struct Node *before;
 };
 
-void freeLinkedList(struct Node *head) // Frees memory of the whole linked list which was malloc'd
+void freeLinkedList(struct Node *end) // Frees memory of the whole linked list which was malloc'd
 {
-    while (head != NULL)
+    while (end != NULL)
     {
-        struct Node *temp = head;
-        head = head->next;
+        struct Node *temp = end;
+        end = end->before;
         free(temp->Line);
 
         free(temp);
@@ -64,6 +84,41 @@ struct Node *AddNode(struct Node **head, const char *Line)
     // return the lates node
     return newNode;
 }
+
+struct Node *readToLinkedlist(FILE *inputFile) // function to read given input to linked list
+{
+    struct Node *head = NULL;
+    struct Node *end = NULL;
+    char *Line = NULL;
+    size_t lineSize = 0;
+    int isStdin = (inputFile == stdin);                  // check if we getting standard input or are we in a file
+    while ((getline(&Line, &lineSize, inputFile) != -1)) // get line to compare
+    {
+
+        if (isStdin && strcmp(Line, "quit\n") == 0) // if we are in standardinput and qord is quit we exit the loop
+        {
+
+            break;
+        }
+
+        size_t len = strlen(Line) - 1;
+        if (Line[len] == '\n')
+        {
+            Line[len] = '\0'; // replace newline with \0
+        }
+        end = AddNode(&head, Line);
+
+        free(Line);
+        Line = NULL; // Reset Line to NULL after freeing to avoid dangling pointer
+        lineSize = 0;
+    }
+    if (Line != NULL) // Check if Line is not NULL before freeing
+    {
+        free(Line);
+    }
+    return end;
+}
+
 void WritetoFile(struct Node **end, char *filename) // start from end and write each linked list node to file
 {
     struct Node *current = *end;
@@ -87,57 +142,66 @@ void WritetoFile(struct Node **end, char *filename) // start from end and write 
     }
     fclose(outputfile);
 }
-void printLinkedList(struct Node **head)
+
+void printLinkedList(struct Node **end) // print the linked list in reverse order to terminal
 {
-    struct Node *current = *head;
+    struct Node *current = *end;
     while (current != NULL)
     {
-        printf("%s", current->Line);
-        current = current->next;
+        printf("%s\n", current->Line);
+        current = current->before;
     }
 }
 int main(int argc, char *argv[])
 {
     char *Line = NULL;
-    struct Node *head = NULL;
+    // struct Node *head = NULL;
     struct Node *end = NULL;
     size_t lineSize = 0;
 
     FILE *inputFile;
-    if (argc != 3)
+    if (argc > 3)
     {
         fprintf(stderr, "Usage: %s <input> <output>\n", argv[0]); // check that right amount of files are given
         exit(1);
     }
-    if (strcmp(argv[1], argv[2]) == 0) // check that input and outputfile differ
+    if (argv[1] != NULL) // check if input file is given
     {
-        fprintf(stderr, "Input and output file must differ\n");
-        exit(1);
-    }
-    inputFile = fopen(argv[1], "r");
+        inputFile = fopen(argv[1], "r");
 
-    if (inputFile == NULL) // check that input file is correct
-    {
-        fprintf(stderr, "cannot open file '%s'\n", argv[0]);
-        fclose(inputFile);
-        exit(1);
-    }
-
-    while (getline(&Line, &lineSize, inputFile) != -1) // getline memory allocates own memory for each line
-    {
-        size_t len = strlen(Line) - 1;
-        if (Line[len] == '\n')
+        if (inputFile == NULL) // check that input file is correct
         {
-            Line[len] = '\0'; // replace newline with \0
+            fprintf(stderr, "cannot open file '%s'\n", argv[1]);
+
+            exit(1);
         }
-        end = AddNode(&head, Line);
-        free(Line);
-        Line = 0;
-        lineSize = 0;
+        end = readToLinkedlist(inputFile);
+        fclose(inputFile);
     }
-    fclose(inputFile); // close the input file
-    WritetoFile(&end, argv[2]);
-    freeLinkedList(head);
+    else
+    {
+        end = readToLinkedlist(stdin); // if no input file is given we read input from standard input stream
+        printLinkedList(&end);
+    }
+
+    if (argv[2] != NULL && argv[1] != NULL) // check that output file is given where to write
+    {
+
+        if (strcmp(argv[1], argv[2]) == 0) // check that input and outputfile differ
+        {
+            fprintf(stderr, "Input and output file must differ\n");
+            exit(1);
+        }
+        WritetoFile(&end, argv[2]);
+    }
+    else
+    {
+        // printf("ennen printtiä\n");
+        printLinkedList(&end);
+        // printf("jälkeen printin\n");
+    }
+
+    freeLinkedList(end);
     // Free memory allocated by getline
     free(Line);
     // end the program with 0
