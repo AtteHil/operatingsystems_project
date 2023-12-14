@@ -1,0 +1,11 @@
+ls
+mkdir testDirectory
+ls
+cd testDirectory/
+touch testFile.txt
+ls
+cd ..
+rm -r testDirectory
+ls
+thisistestcommand
+exit
