@@ -11,7 +11,8 @@
  *     program will print line if word is in it.
  *
  * In addition to the course material and LUT programming guide
- * for the C-language courses, we got help for comparing strings from: https://www.tutorialspoint.com/c_standard_library/c_function_strstr.htm
+ * for the C-language courses, we got help for comparing strings 
+ * from: https://www.tutorialspoint.com/c_standard_library/c_function_strstr.htm
  *
  * Authors:
  * - Aleksi Haapalainen

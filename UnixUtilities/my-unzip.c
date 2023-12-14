@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-void my_unzip(FILE *file) {
+void myUnzip(FILE *file) {
     int count;
     char currentChar;
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
                 perror("Error opening file");
                 return 1;
             }
-            my_unzip(file);
+            myUnzip(file);
             fclose(file);
         }  
     }

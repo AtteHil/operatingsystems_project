@@ -1,18 +1,19 @@
 /************************************************************
- * This program is a simple reverse function which reverses given textfile
- * or standard input stream to output file to terminal
+ * This program is a simple reverse function which reverses given text file
+ * or standard input stream to output file or to terminal.
  *
- * Program can be run three ways
- *  1) File input and no output: user can give first argument as textfile where program
- *     reads the lines and outputs lines in reverse order in terminal
- *  2) File input and output file: user can give outputfile name where the
- *     lines from first text file will be reversed and saved to.
+ * Program can be run in three ways:
+ *  1) File input and no output: user can give first argument as text file 
+ *     where program reads the lines and outputs lines in reverse order in terminal.
+ *  2) File input and file output: user can give output file name where the
+ *     lines from first text file will be reversed and saved to output file.
  *  3) No arguments: User can run program without additional arguments.
- *     program then reads from standard input stream and reverses given lines to terminal after quit
- *     is written to terminal.
+ *     program then reads from standard input stream and reverses given lines 
+ *     to terminal after 'quit' is written to terminal.
  *
  * In addition to the course material and LUT programming guide
- * for the C-language courses,we found help for getline function and how it does memory allocation https://solarianprogrammer.com/2019/04/03/c-programming-read-file-lines-fgets-getline-implement-portable-getline/
+ * for the C-language courses, we found help for getline function and how it does 
+ * memory allocation from: https://solarianprogrammer.com/2019/04/03/c-programming-read-file-lines-fgets-getline-implement-portable-getline/
  * and help for linked list and going through it: https://www.learn-c.org/en/Linked_lists
  *
  * Authors:
@@ -195,9 +196,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        // printf("ennen printtiä\n");
         printLinkedList(&end);
-        // printf("jälkeen printin\n");
     }
 
     freeLinkedList(end);
